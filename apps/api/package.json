@@ -1,0 +1,16 @@
+{
+  "name": "api",
+  "type": "module",
+  "scripts": {
+    "dev": "vc dev"
+  },
+  "dependencies": {
+    "@repo/logger": "*",
+    "graphlib": "^2.1.8",
+    "hono": "^4.9.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "typescript": "^5.8.3"
+  }
+}
