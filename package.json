@@ -15,7 +15,7 @@
   },
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "libs/*"
   ],
   "packageManager": "yarn@1.22.10",
   "engines": {

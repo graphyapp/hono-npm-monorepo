@@ -1,126 +1,67 @@
-# Turborepo + Hono starter
+# Instructions
 
-## What's inside?
+1. Create a folder outside of this repo, call it `deploy_from_here`
+2. On the root of the project `vc link --repo`, link both projects
+3. On the root of the project `vc build` and build `api`
+4. Move the build to the deployment folder: `mv apps/api/.vercel ../deploy_from_here`
+5. Try Deploy:
 
-This Turborepo includes the following packages/apps:
+```bash
+export VERCEL_VERSION=46.1.0
+export VERCEL_ORG_ID=...
+export VERCEL_PROJECT_ID=...
+export VERCEL_ENV=stage
+export VERCEL_TOKEN=....
 
-### Apps and Packages
-
-- `api`: a [Hono](https://hono.dev/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+# npx --yes vercel@$VERCEL_VERSION pull --token $VERCEL_TOKEN
+npx --yes vercel@$VERCEL_VERSION deploy --token $VERCEL_TOKEN --yes --prebuilt --archive=tgz
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+You might see this output:
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+```bash
+➜  deploy_from_here npx --yes vercel@$VERCEL_VERSION deploy --token $VERCEL_TOKEN --yes --prebuilt --archive=tgz
+Vercel CLI 46.1.0
+Error: The provided path “~/dev/graphy/deploy_from_here/apps/api” does not exist. To change your Project Settings, go to https://vercel.com/graphy-vercels-projects/hono-npm-monorepo-api/settings
 ```
 
-### Develop
+You can try to create this folder to just silence this issue: 
 
-To develop all apps and packages, run the following commands:
-
-```
-cd my-turborepo
-vc link --repo # Connect your repository to Vercel
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+mkdir -p apps/api`
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+But then you get this error:
+```bash
+➜  deploy_from_here npx --yes vercel@$VERCEL_VERSION deploy --token $VERCEL_TOKEN --yes --prebuilt --archive=tgz
+Vercel CLI 46.1.0
+⠋ Deploying graphy-vercels-projects/hono-npm-monorepo-api[Error: ENOENT: no such file or directory, lstat '/Users/canastro/dev/graphy/deploy_from_here/node_modules/@repo/logger'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'lstat',
+  path: '/Users/canastro/dev/graphy/deploy_from_here/node_modules/@repo/logger'
+}
+Error: An unexpected error occurred!
+Error: ENOENT: no such file or directory, lstat '/Users/canastro/dev/graphy/deploy_from_here/node_modules/@repo/logger'
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+You can copy the libs to node_modules to "fix" this:
+```bash
+mkdir node_modules
+mkdir .vercel/output/functions/index.func/node_modules
+cp -R .vercel/output/functions/index.func/libs node_modules/@repo 
+cp -R .vercel/output/functions/index.func/libs .vercel/output/functions/index.func/node_modules/@repo 
 ```
 
-## Useful Links
+And now:
+```bash
+➜  deploy_from_here npx --yes vercel@$VERCEL_VERSION deploy --token $VERCEL_TOKEN --yes --prebuilt --archive=tgz
+Vercel CLI 46.1.0
+🔍  Inspect: https://vercel.com/graphy-vercels-projects/hono-npm-monorepo-api/G28qXTyf3sQkxFNzcZZH3d3RdNQC [2s]
+✅  Production: https://hono-npm-monorepo-cr560zv2w-graphy-vercels-projects.vercel.app [2s]
+📝  Deployed to production. Run `vercel --prod` to overwrite later (https://vercel.link/2F).
+💡  To change the domain or build command, go to https://vercel.com/graphy-vercels-projects/hono-npm-monorepo-api/settings
+```
 
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+For some reason this one is failing a bit more because the "hono" package is not present in the node_modules of the build output. 
+So its still failing in runtime.
